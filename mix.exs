@@ -120,7 +120,7 @@ defmodule Timber.Plug.MixProject do
   defp deps do
     [
       {:plug, "~> 1.2"},
-      {:timber, "~> 3.0.0-alpha.1"},
+      {:timber, "~> 3.0.0-alpha.3"},
 
       #
       # Tooling
