@@ -66,7 +66,8 @@ defmodule Timber.Plug.MixProject do
     [
       coveralls: :test,
       "coveralls.details": :test,
-      "coveralls.html": :test
+      "coveralls.html": :test,
+      "coveralls.travis": :test
     ]
   end
 
