@@ -1,7 +1,7 @@
 defmodule Timber.Plug.MixProject do
   use Mix.Project
 
-  @version "1.0.0-alpha.1"
+  @version "1.0.0"
   @source_url "https://github.com/timberio/timber-elixir-plug"
   @homepage_url "https://github.com/timberio/timber-elixir-plug"
   @project_description """
@@ -119,17 +119,17 @@ defmodule Timber.Plug.MixProject do
   defp deps do
     [
       {:plug, "~> 1.2"},
-      {:timber, "~> 3.0.0-alpha.1"},
+      {:timber, "~> 3.0"},
 
       #
       # Tooling
       #
 
       {:cowboy, "~> 1.0.1", only: [:dev, :test]},
-      {:credo, "~> 0.10", only: [:dev, :test]},
+      {:credo, "~> 1.0", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev, :test]},
       {:earmark, "~> 1.2", only: [:dev]},
-      {:ex_doc, "~> 0.18.0", only: [:dev]},
+      {:ex_doc, "~> 0.19.0", only: [:dev]},
       {:excoveralls, "~> 0.10", only: [:dev, :test]}
     ]
   end
