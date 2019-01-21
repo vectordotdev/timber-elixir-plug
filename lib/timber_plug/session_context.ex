@@ -26,8 +26,6 @@ defmodule Timber.Plug.SessionContext do
 
   @session_id_key :_timber_session_id
 
-  alias Timber.Contexts.SessionContext
-
   @doc false
   @impl true
   def init(opts) do
@@ -80,7 +78,7 @@ defmodule Timber.Plug.SessionContext do
     # This is the safest place to do it, since we've confirmed that the session
     # is being used and a session ID has been generated. This is a side-effect,
     # and we don't return anything about it to the caller function.
-    %SessionContext{id: session_id}
+    %{session: %{id: session_id}}
     |> Timber.add_context()
 
     # We ensure that we set the session_id on the session here, regardless of

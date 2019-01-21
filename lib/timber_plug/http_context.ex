@@ -48,8 +48,6 @@ defmodule Timber.Plug.HTTPContext do
 
   @behaviour Plug
 
-  alias Timber.Contexts.HTTPContext
-
   @doc false
   @impl true
   def init(opts) do
@@ -68,11 +66,13 @@ defmodule Timber.Plug.HTTPContext do
         [] -> nil
       end
 
-    %HTTPContext{
-      method: method,
-      path: request_path,
-      request_id: request_id,
-      remote_addr: remote_addr
+    %{
+      http: %{
+        method: method,
+        path: request_path,
+        request_id: request_id,
+        remote_addr: remote_addr
+      }
     }
     |> Timber.add_context()
 

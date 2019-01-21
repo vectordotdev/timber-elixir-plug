@@ -68,9 +68,6 @@ defmodule Timber.Plug.Event do
 
   require Logger
 
-  alias Timber.Event
-  alias Timber.Events.HTTPRequestEvent
-  alias Timber.Events.HTTPResponseEvent
   alias Timber.Timer
 
   @doc false
@@ -87,22 +84,18 @@ defmodule Timber.Plug.Event do
     request_id_header_name = Keyword.get(opts, :request_id_header, "x-request-id")
     request_id_header = Timber.Plug.get_request_id(conn, request_id_header_name)
     request_id = request_id_from_header(request_id_header)
-
     method = conn.method
     host = conn.host
     port = conn.port
     scheme = conn.scheme
     path = conn.request_path
     headers = List.flatten([request_id_header | conn.req_headers])
+    headers_json = Timber.try_encode_to_json(headers)
     query_string = conn.query_string
 
-    event =
-      HTTPRequestEvent.new(
-        # Disabled for now since the body can be excessive and the params should be captured
-        # in the controller_call event.
-        # body: conn.body_params,
-        direction: "incoming",
-        headers: headers,
+    event = %{
+      http_request_received: %{
+        headers_json: headers_json,
         host: host,
         method: method,
         path: path,
@@ -110,10 +103,15 @@ defmodule Timber.Plug.Event do
         query_string: query_string,
         request_id: request_id,
         scheme: scheme
-      )
+      }
+    }
 
-    message = HTTPRequestEvent.message(event)
-    metadata = Event.to_metadata(event)
+    message =
+      if path do
+        ["Received ", method, " ", path]
+      else
+        ["Received ", method]
+      end
 
     Logger.log(log_level, message, metadata)
 
@@ -125,12 +123,10 @@ defmodule Timber.Plug.Event do
 
   @spec log_response_event(Plug.Conn.t()) :: Plug.Conn.t()
   defp log_response_event(conn) do
-    time_ms = Timber.duration_ms(conn.private.timber_timer)
+    duration_ms = Timber.duration_ms(conn.private.timber_timer)
     opts = conn.private.timber_opts
     log_level = Keyword.get(opts, :log_level, :info)
-
     status = Plug.Conn.Status.code(conn.status)
-
     request_id_header_name = Keyword.get(opts, :request_id_header, "x-request-id")
     request_id_header = Timber.Plug.get_request_id(conn, request_id_header_name)
 
@@ -143,21 +139,26 @@ defmodule Timber.Plug.Event do
       request_id_header | conn.resp_headers
     ]
 
+    headers_json = Timber.try_encode_to_json(headers)
     request_id = request_id_from_header(request_id_header)
 
-    event =
-      HTTPResponseEvent.new(
-        direction: "outgoing",
-        headers: headers,
+    event = %{
+      http_response_sent: %{
+        headers_json: headers_json,
         request_id: request_id,
         status: status,
-        time_ms: time_ms
-      )
+        duration_ms: duration_ms
+      }
+    }
 
-    message = HTTPResponseEvent.message(event)
-    metadata = Event.to_metadata(event)
+    message = [
+      "Sent ",
+      Integer.to_string(event.status),
+      " response in ",
+      Timber.format_duration_ms(event.time_ms)
+    ]
 
-    Logger.log(log_level, message, metadata)
+    Logger.log(log_level, message, event: event)
 
     conn
   end
@@ -170,5 +171,11 @@ defmodule Timber.Plug.Event do
       [{_, request_id}] -> request_id
       [] -> nil
     end
+  end
+
+  # Constructs a full path from the given parts
+  def full_url(scheme, host, path, port, query_string) do
+    %URI{scheme: scheme, host: host, path: path, port: port, query: query_string}
+    |> URI.to_string()
   end
 end
