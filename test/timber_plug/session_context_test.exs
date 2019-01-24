@@ -12,7 +12,7 @@ defmodule Timber.Plug.SessionContextTest do
     {:ok, conn: conn}
   end
 
-  describe "Timber.Integrations.SessionContextPlug.call/2" do
+  describe "Timber.Plug.SessionContext.call/2" do
     test "retrieves an existing Timber session ID from the session", %{conn: conn} do
       timber_session_id = "timber"
 
