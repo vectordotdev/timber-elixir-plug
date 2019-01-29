@@ -113,7 +113,7 @@ defmodule Timber.Plug.Event do
         ["Received ", method]
       end
 
-    Logger.log(log_level, message, metadata)
+    Logger.log(log_level, message, event: event)
 
     conn
     |> Plug.Conn.put_private(:timber_opts, opts)
