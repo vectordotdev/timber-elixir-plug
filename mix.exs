@@ -119,7 +119,7 @@ defmodule Timber.Plug.MixProject do
   defp deps do
     [
       {:plug, "~> 1.2"},
-      {:timber, "~> 3.0"},
+      {:timber, git: "https://github.com/timberio/timber-elixir.git"},
 
       #
       # Tooling
