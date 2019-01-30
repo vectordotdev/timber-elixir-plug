@@ -90,7 +90,7 @@ defmodule Timber.Plug.Event do
     scheme = conn.scheme
     path = conn.request_path
     headers = List.flatten([request_id_header | conn.req_headers])
-    headers_json = Timber.try_encode_to_json(headers)
+    headers_json = headers_to_headers_json(headers)
     query_string = conn.query_string
 
     event = %{
@@ -135,11 +135,13 @@ defmodule Timber.Plug.Event do
     bytes = body_bytes(conn.resp_body)
 
     headers = [
-      {"content-length", Integer.to_string(bytes)},
-      request_id_header | conn.resp_headers
+      {"content-length", Integer.to_string(bytes)}
+      | conn.resp_headers
     ]
 
-    headers_json = Timber.try_encode_to_json(headers)
+    headers = List.flatten([request_id_header | headers])
+
+    headers_json = headers_to_headers_json(headers)
     request_id = request_id_from_header(request_id_header)
 
     event = %{
@@ -177,5 +179,11 @@ defmodule Timber.Plug.Event do
   def full_url(scheme, host, path, port, query_string) do
     %URI{scheme: scheme, host: host, path: path, port: port, query: query_string}
     |> URI.to_string()
+  end
+
+  @spec headers_to_headers_json(Keyword.t()) :: String.t()
+  def headers_to_headers_json(headers) do
+    Map.new(headers)
+    |> Jason.encode!()
   end
 end
