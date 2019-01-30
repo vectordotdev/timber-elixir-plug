@@ -153,9 +153,9 @@ defmodule Timber.Plug.Event do
 
     message = [
       "Sent ",
-      Integer.to_string(event.status),
+      Integer.to_string(status),
       " response in ",
-      Timber.format_duration_ms(event.time_ms)
+      Timber.format_duration_ms(duration_ms)
     ]
 
     Logger.log(log_level, message, event: event)
