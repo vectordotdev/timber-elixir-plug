@@ -68,6 +68,7 @@ defmodule Timber.Plug.Event do
 
   require Logger
 
+  alias Timber.JSON
   alias Timber.Timer
 
   @doc false
@@ -184,6 +185,6 @@ defmodule Timber.Plug.Event do
   @spec headers_to_headers_json(Keyword.t()) :: String.t()
   def headers_to_headers_json(headers) do
     Map.new(headers)
-    |> Jason.encode!()
+    |> JSON.encode_to_binary!()
   end
 end
