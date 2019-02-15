@@ -9,21 +9,21 @@ The Timber Plug library provides enhanced logging for your Plug-based applicatio
 
 ## Installation
 
-Ensure that you have both `:timber` (version 3.0.0 or later) and `:timber_plug` listed
+1. Ensure that you have both `:timber` (version 3.0.0 or later) and `:timber_plug` listed
 as dependencies in `mix.exs`:
 
-```elixir
-def deps do
-  [
-    {:timber, "~> 3.0"},
-    {:timber_plug, "~> 1.0"}
-  ]
-end
-```
+    ```elixir
+    def deps do
+      [
+        {:timber, "~> 3.0"},
+        {:timber_plug, "~> 1.0"}
+      ]
+    end
+    ```
 
-Then run `mix deps.get`.
+2. Run `mix deps.get` to get the dependencies.
 
-See the documentation for
+3. See the documentation for
 [`Timber.Plug.Event`](https://hexdocs.pm/timber_plug/Timber.Plug.Event.html),
 [`Timber.Plug.HTTPContext`](https://hexdocs.pm/timber_plug/Timber.Plug.HTTPContext.html),
 and
