@@ -1,7 +1,7 @@
 defmodule Timber.Plug.MixProject do
   use Mix.Project
 
-  @version "1.0.0"
+  @version "1.1.0"
   @source_url "https://github.com/timberio/timber-elixir-plug"
   @homepage_url "https://github.com/timberio/timber-elixir-plug"
   @project_description """
@@ -119,7 +119,7 @@ defmodule Timber.Plug.MixProject do
   defp deps do
     [
       {:plug, "~> 1.2"},
-      {:timber, git: "https://github.com/timberio/timber-elixir.git"},
+      {:timber, "~> 3.1"},
 
       #
       # Tooling

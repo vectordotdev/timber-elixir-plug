@@ -6,6 +6,8 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [1.1.0] - 2019-02-25
+
 ### Changed
 
   - `http_response` events are now called `http_response_sent` events to follow the recommending
@@ -15,5 +17,6 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## 1.0.0 - 2018-12-21
 
-[Unreleased]: https://github.com/timberio/timber-elixir-plug/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/timberio/timber-elixir-plug/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/timberio/timber-elixir-plug/compare/v1.0.0...v1.1.0
 
